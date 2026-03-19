@@ -1,0 +1,25 @@
+import java.util.Scanner;
+class Studentgradecaluculator{
+public static void main(String[] args) {
+    Scanner sc=new Scanner(System.in);
+    char Grade=' ';
+    System.out.print("Enter your English Marks: ");
+    int English=sc.nextInt();
+    System.out.print("Enter your Maths Marks: ");
+    int Maths=sc.nextInt();
+    System.out.print("Enter your Scienece Marks: ");
+    int Science=sc.nextInt();
+    int total=English+Maths+Science;
+    float avg=total/3;
+    if(avg>=90) Grade='A';
+    else if(avg>=75 && avg<90) Grade='B';
+    else if(avg>=60 && avg<75) Grade='C';
+    else if(avg>=30 && avg<60) Grade='D';
+    else if(avg>=15 && avg<30) Grade='E';
+    else Grade='F';
+    System.out.println("Total: "+total);
+    System.out.println("Avg: "+avg+"%");
+    System.out.println("Grade: "+Grade);
+    sc.close();
+}
+}
