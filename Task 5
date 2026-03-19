@@ -1,0 +1,156 @@
+import java.util.*;
+import java.io.*;
+
+class Student {
+    int id;
+    String name;
+    int age;
+
+    Student(int id, String name, int age) {
+        this.id = id;
+        this.name = name;
+        this.age = age;
+    }
+
+    public String toString() {
+        return id + "," + name + "," + age;
+    }
+}
+
+public class StudentManagement {
+
+    static ArrayList<Student> students = new ArrayList<>();
+
+    static void loadStudents() {
+        try {
+            File file = new File("students.txt");
+            if (!file.exists()) return;
+
+            Scanner fs = new Scanner(file);
+            while (fs.hasNextLine()) {
+                String line = fs.nextLine();
+                String parts[] = line.split(",");
+                students.add(new Student(
+                        Integer.parseInt(parts[0]),
+                        parts[1],
+                        Integer.parseInt(parts[2])));
+            }
+            fs.close();
+        } catch (Exception e) {
+            System.out.println("Error reading file");
+        }
+    }
+
+    static void saveStudents() {
+        try {
+            PrintWriter pw = new PrintWriter("students.txt");
+
+            for (Student s : students) {
+                pw.println(s);
+            }
+
+            pw.close();
+        } catch (Exception e) {
+            System.out.println("Error writing file");
+        }
+    }
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+        loadStudents();
+        int choice;
+
+        do {
+
+            System.out.println("\n--- Student Management System ---");
+            System.out.println("1. Add Student");
+            System.out.println("2. Edit Student");
+            System.out.println("3. Search Student");
+            System.out.println("4. Display All Students");
+            System.out.println("5. Exit");
+            System.out.print("Enter choice: ");
+
+            choice = sc.nextInt();
+
+            switch (choice) {
+
+                case 1:
+                    System.out.print("Enter ID: ");
+                    int id = sc.nextInt();
+                    sc.nextLine();
+
+                    System.out.print("Enter Name: ");
+                    String name = sc.nextLine();
+
+                    if (name.isEmpty()) {
+                        System.out.println("Name cannot be empty");
+                        break;
+                    }
+
+                    System.out.print("Enter Age: ");
+                    int age = sc.nextInt();
+
+                    if (age <= 0) {
+                        System.out.println("Invalid age");
+                        break;
+                    }
+
+                    students.add(new Student(id, name, age));
+                    System.out.println("Student Added");
+                    break;
+
+                case 2:
+                    System.out.print("Enter ID to edit: ");
+                    int eid = sc.nextInt();
+                    sc.nextLine();
+
+                    for (Student s : students) {
+                        if (s.id == eid) {
+
+                            System.out.print("Enter new name: ");
+                            s.name = sc.nextLine();
+
+                            System.out.print("Enter new age: ");
+                            s.age = sc.nextInt();
+
+                            System.out.println("Student Updated");
+                        }
+                    }
+                    break;
+
+                case 3:
+                    System.out.print("Enter ID to search: ");
+                    int sid = sc.nextInt();
+
+                    for (Student s : students) {
+                        if (s.id == sid) {
+                            System.out.println("ID: " + s.id +
+                                    " Name: " + s.name +
+                                    " Age: " + s.age);
+                        }
+                    }
+                    break;
+
+                case 4:
+                    for (Student s : students) {
+                        System.out.println("ID: " + s.id +
+                                " Name: " + s.name +
+                                " Age: " + s.age);
+                    }
+                    break;
+
+                case 5:
+                    saveStudents();
+                    System.out.println("Data saved. Exiting...");
+                    break;
+
+                default:
+                    System.out.println("Invalid choice");
+            }
+
+        } while (choice != 5);
+
+        sc.close();
+    }
+}
